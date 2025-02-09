@@ -966,23 +966,8 @@ impl String {
     /// This is highly unsafe, due to the number of invariants that aren't
     /// checked:
     ///
-    /// * The memory at `buf` needs to have been previously allocated by the
-    ///   same allocator the standard library uses, with a required alignment of exactly 1.
-    /// * `length` needs to be less than or equal to `capacity`.
-    /// * `capacity` needs to be the correct value.
-    /// * The first `length` bytes at `buf` need to be valid UTF-8.
-    ///
-    /// Violating these may cause problems like corrupting the allocator's
-    /// internal data structures. For example, it is normally **not** safe to
-    /// build a `String` from a pointer to a C `char` array containing UTF-8
-    /// _unless_ you are certain that array was originally allocated by the
-    /// Rust standard library's allocator.
-    ///
-    /// The ownership of `buf` is effectively transferred to the
-    /// `String` which may then deallocate, reallocate or change the
-    /// contents of memory pointed to by the pointer at will. Ensure
-    /// that nothing else uses the pointer after calling this
-    /// function.
+    /// * all safety requirements for [`Vec::<u8>::from_raw_parts`]
+    /// * all safety requirements for [`String::from_utf8_unchecked`]
     ///
     /// # Examples
     ///
